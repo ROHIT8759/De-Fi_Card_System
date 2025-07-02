@@ -145,13 +145,18 @@ function App() {
     switch (currentPage) {
       case 'landing':
         return (
-          <div>
-            <HeroSection onNavigateToApp={() => setCurrentPage('marketplace')} />
-            <Features />
-            <Reputation />
-            <FaucetModule />
-            <BuiltOnAptos />
-            <CTASection onNavigateToApp={() => setCurrentPage('marketplace')} />
+          <div className="bg-black text-white font-sans relative">
+            <LandingNavbar />
+            <main className="overflow-x-hidden">
+              <HeroSection onNavigateToApp={() => setCurrentPage('marketplace')} />
+              <div className="bg-grid">
+                <Features />
+                <Reputation />
+                <FaucetModule />
+                <BuiltOnAptos />
+                <CTASection onNavigateToApp={() => setCurrentPage('marketplace')} />
+              </div>
+            </main>
             <Footer />
           </div>
         );
