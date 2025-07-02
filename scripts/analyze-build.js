@@ -59,6 +59,11 @@ export default defineConfig({
             return 'dashboard-components';
           }
           
+          // Group marketplace components
+          if (id.includes('/components/marketplace/')) {
+            return 'marketplace-components';
+          }
+          
           // Return undefined for everything else (default chunking)
           return undefined;
         }
@@ -77,39 +82,4 @@ export default defineConfig({
       '@': path.resolve(__dirname, '..', 'src')
     }
   }
-});
-              './src/components/dashboard/ProfileDashboard.jsx'
-            ],
-            'marketplace-components': [
-              './src/components/marketplace/AssetTable.jsx',
-              './src/components/marketplace/BuySellModal.jsx',
-              './src/components/marketplace/TradeInterface.jsx'
-            ]
-          }
-        }
-      }
-    },
-    optimizeDeps: {
-      include: ['react', 'react-dom']
-    },
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, '../src')
-      }
-    }
-  };
-
-  // Add visualizer plugin in analyze mode
-  if (mode === 'analyze') {
-    config.plugins.push(
-      visualizer({
-        open: true,
-        filename: 'stats.html',
-        gzipSize: true,
-        brotliSize: true,
-      })
-    );
-  }
-
-  return config;
 });
