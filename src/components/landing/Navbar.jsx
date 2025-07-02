@@ -6,7 +6,7 @@ export default function LandingNavbar({ onWalletConnect }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="fixed top-2 sm:top-4 left-4 sm:left-20 right-4 sm:right-20 z-50">
+    <header className="fixed top-4 left-20 right-20 z-50">
       <div className="backdrop-blur-lg bg-black/30 border-[1px] border-[#1820c4] shadow-[0_0_8px_rgba(0,255,255,0.4)] rounded-xl">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between text-white font-medium">
           {/* Logo */}

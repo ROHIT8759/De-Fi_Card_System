@@ -146,7 +146,6 @@ function App() {
       case 'landing':
         return (
           <div className="bg-black text-white font-sans relative">
-            <LandingNavbar />
             <main className="overflow-x-hidden">
               <HeroSection onNavigateToApp={() => setCurrentPage('marketplace')} />
               <div className="bg-grid">
