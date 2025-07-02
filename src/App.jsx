@@ -163,7 +163,7 @@ function App() {
 
       case 'marketplace':
         return (
-          <div className="max-w-7xl mx-auto px-4 space-y-6">
+          <div className="max-w-7xl mx-auto space-y-6">
             <SummaryHeader
               marketSize={marketStats.marketSize}
               totalBorrowed={marketStats.totalBorrowed}
@@ -175,7 +175,7 @@ function App() {
                 <div className="flex justify-end">
                   <button
                     onClick={() => setViewMode(viewMode === 'cards' ? 'table' : 'cards')}
-                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg"
+                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm"
                   >
                     Toggle View: {viewMode === 'cards' ? 'Table' : 'Cards'}
                   </button>
@@ -192,7 +192,7 @@ function App() {
 
                 {filteredCoins.length > 0 ? (
                   viewMode === 'cards' ? (
-                    <div className="grid gap-6 md:grid-cols-2">
+                    <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2">
                       {filteredCoins.slice(0, 6).map((coin) => (
                         <CoinCard
                           key={coin.id}
@@ -203,7 +203,9 @@ function App() {
                       ))}
                     </div>
                   ) : (
-                    <AssetTable coins={filteredCoins.slice(0, 10)} onTrade={handleTrade} />
+                    <div className="overflow-x-auto">
+                      <AssetTable coins={filteredCoins.slice(0, 10)} onTrade={handleTrade} />
+                    </div>
                   )
                 ) : (
                   <div className="text-center py-8">
@@ -222,7 +224,7 @@ function App() {
 
       case 'dashboard':
         return (
-          <div className="max-w-7xl mx-auto px-4 space-y-6">
+          <div className="max-w-7xl mx-auto space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
                 <ProfileDashboard />
@@ -236,52 +238,52 @@ function App() {
         );
 
       case 'cards':
-  return (
-    <section className="pt-32 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-20 text-white">
-      {/* 💳 Header */}
-      <div className="text-center space-y-3">
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-glow">
-          Loan Management
-        </h1>
-        <p className="text-white/60 text-lg max-w-xl mx-auto">
-          Manage your active loans, request new ones, and track your eligibility.
-        </p>
-      </div>
+        return (
+          <section className="pt-20 pb-24 space-y-12 md:space-y-20 text-white">
+            {/* 💳 Header */}
+            <div className="text-center space-y-3">
+              <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-glow">
+                Loan Management
+              </h1>
+              <p className="text-white/60 text-base md:text-lg max-w-xl mx-auto px-4">
+                Manage your active loans, request new ones, and track your eligibility.
+              </p>
+            </div>
 
-      {/* 📝 Form + 📈 Eligibility */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
-        {/* Request Form */}
-        <div className="lg:col-span-2">
-          <LoanRequestForm />
-        </div>
+            {/* 📝 Form + 📈 Eligibility */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-start">
+              {/* Request Form */}
+              <div className="lg:col-span-2">
+                <LoanRequestForm />
+              </div>
 
-        {/* Eligibility Meter */}
-        <div className="sticky top-32">
-          <LoanEligibilityMeter score={75} />
-        </div>
-      </div>
+              {/* Eligibility Meter */}
+              <div className="lg:sticky lg:top-32">
+                <LoanEligibilityMeter score={75} />
+              </div>
+            </div>
 
-      {/* 📋 Active Loans */}
-      <div className="space-y-10">
-        <h2 className="text-3xl font-semibold bg-gradient-to-r from-purple-300 via-cyan-300 to-pink-300 bg-clip-text text-transparent drop-shadow-glow">
-          📋 Your Active Loans
-        </h2>
+            {/* 📋 Active Loans */}
+            <div className="space-y-6 md:space-y-10">
+              <h2 className="text-2xl md:text-3xl font-semibold bg-gradient-to-r from-purple-300 via-cyan-300 to-pink-300 bg-clip-text text-transparent drop-shadow-glow">
+                📋 Your Active Loans
+              </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          {/* Big Loan Card - left side */}
-          <div className="md:col-span-2">
-            <BigLoanCard loan={mockLoans[0]} />
-          </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-start">
+                {/* Big Loan Card - left side */}
+                <div className="lg:col-span-2">
+                  <BigLoanCard loan={mockLoans[0]} />
+                </div>
 
-          {/* Small Loan Cards - right side */}
-          <div className="flex flex-col gap-6">
-            <SmallLoanCard loan={mockLoans[1]} />
-            <SmallLoanCard loan={mockLoans[2]} />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+                {/* Small Loan Cards - right side */}
+                <div className="flex flex-col gap-4 md:gap-6">
+                  <SmallLoanCard loan={mockLoans[1]} />
+                  <SmallLoanCard loan={mockLoans[2]} />
+                </div>
+              </div>
+            </div>
+          </section>
+        );
 
 
 
@@ -303,22 +305,37 @@ function App() {
   
   return (
     <ErrorBoundary>
-      <div className={`min-h-screen bg-grid transition-colors duration-300 ${currentPage === 'landing' ? 'bg-black text-white' : 'bg-gray-50 dark:bg-gray-900'}`}>
-        {currentPage === 'landing' ? (
-          <LandingNavbar 
-            onNavigateToApp={() => setCurrentPage('marketplace')}
-            onWalletConnect={() => handleWalletConnect({ address: '0x1234...abcd' })}
-          />
-        ) : (
-          <NavBar 
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            walletAddress={walletAddress}
-            onWalletConnect={handleWalletConnect}
-          />
-        )}
-        <main className="relative z-10">
-          {renderPage()}
+      <div className={`w-full min-h-screen relative ${
+        currentPage === 'landing' 
+          ? 'bg-black text-white bg-grid' 
+          : 'bg-gray-900 text-white bg-grid'
+      }`} style={{ minHeight: '100vh', width: '100vw' }}>
+        {/* Navigation - responsive for mobile */}
+        <div className="relative z-20 w-full">
+          {currentPage === 'landing' ? (
+            <LandingNavbar 
+              onNavigateToApp={() => setCurrentPage('marketplace')}
+              onWalletConnect={() => handleWalletConnect({ address: '0x1234...abcd' })}
+            />
+          ) : (
+            <NavBar 
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              walletAddress={walletAddress}
+              onWalletConnect={handleWalletConnect}
+            />
+          )}
+        </div>
+        
+        {/* Main content with better mobile structure */}
+        <main className={`relative z-10 w-full min-h-screen ${
+          currentPage === 'landing' 
+            ? 'bg-black text-white' 
+            : 'bg-gray-900 text-white pt-16 md:pt-20'
+        }`} style={{ minHeight: '100vh', width: '100%' }}>
+          <div className={currentPage === 'landing' ? 'w-full' : 'px-4 sm:px-6 lg:px-8 w-full'}>
+            {renderPage()}
+          </div>
         </main>
       </div>
     </ErrorBoundary>
