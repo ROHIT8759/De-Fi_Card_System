@@ -1,0 +1,76 @@
+/* Custom cursor with fallback */
+.custom-cursor {
+  cursor: url('/assets/cursor-glow.svg'), auto;
+}
+
+/* Optimized textured background with responsive sizing */
+.bg-texture {
+  background-image: url('/assets/textured-dark-bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed; /* Better performance on desktop */
+}
+
+/* Responsive grid background with optimized performance */
+.bg-grid {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center;
+  /* GPU acceleration for better performance */
+  transform: translateZ(0);
+  will-change: auto;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .bg-texture {
+    background-attachment: scroll; /* Better performance on mobile */
+    background-size: cover;
+  }
+  
+  .bg-grid {
+    background-size: 20px 20px; /* Smaller grid on mobile */
+    opacity: 0.7; /* Slightly reduced opacity for better readability */
+  }
+  
+  .custom-cursor {
+    cursor: auto; /* Fallback to default cursor on mobile */
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .bg-grid {
+    background-size: 15px 15px; /* Even smaller grid on small mobile */
+    opacity: 0.5; /* More reduced opacity for tiny screens */
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .bg-grid {
+    background-size: 30px 30px; /* Medium grid on tablets */
+  }
+}
+
+/* Reduced motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .bg-texture {
+    background-attachment: scroll;
+  }
+  
+  .bg-grid {
+    transform: none;
+    will-change: auto;
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .bg-grid {
+    background-size: 40px 40px;
+  }
+}

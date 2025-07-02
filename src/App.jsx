@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
+
+// Import error boundary
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Import navigation
 import NavBar from './components/NavBar';
+import LandingNavbar from './components/landing/Navbar';
 
 // Import landing components
 import HeroSection from './components/landing/HeroSection';
 import Features from './components/landing/Features';
 import CTASection from './components/landing/CTASection';
+import Reputation from './components/landing/Reputation';
+import FaucetModule from './components/landing/FaucetModule';
+import BuiltOnAptos from './components/landing/BuiltOnAptos';
+import Footer from './components/landing/Footer';
 
 // Import dashboard components
 import ProfileDashboard from './components/dashboard/ProfileDashboard';
@@ -44,10 +52,10 @@ function App() {
 
   const coinList = 'bitcoin,ethereum,uniswap,aave,curve-dao-token,chainlink,litecoin,maker,compound-governance-token,the-graph,optimism,arbitrum,avalanche-2,solana,toncoin';
 
-  // Mock wallet connection
-  const handleWalletConnect = (address) => {
+  // Mock wallet connection with useCallback for optimization
+  const handleWalletConnect = useCallback((address) => {
     setWalletAddress(address);
-  };
+  }, []);
 
   // Fetch coin data when needed
   useEffect(() => {
@@ -90,10 +98,10 @@ function App() {
     setFilteredCoins(data);
   }, [searchTerm, sortBy, coins]);
 
-  // Handle trading
-  const handleTrade = (coin, isBuy) => {
+  // Handle trading with useCallback for optimization
+  const handleTrade = useCallback((coin, isBuy) => {
     alert(`${isBuy ? 'Buying' : 'Selling'} ${coin.name} - Feature coming soon!`);
-  };
+  }, []);
 
   // Mock loan data for cards
   const mockLoans = [
@@ -123,10 +131,14 @@ function App() {
   }
   ];
 
-  // Compute stats for marketplace
-  const marketSize = filteredCoins.reduce((sum, coin) => sum + (coin.market_cap || 0), 0);
-  const totalBorrowed = filteredCoins.reduce((sum, coin) => sum + (coin.total_volume || 0), 0);
-  const lentOut = marketSize > 0 ? ((totalBorrowed / marketSize) * 100).toFixed(2) : 0;
+  // Compute stats for marketplace with useMemo for optimization
+  const marketStats = useMemo(() => {
+    const marketSize = filteredCoins.reduce((sum, coin) => sum + (coin.market_cap || 0), 0);
+    const totalBorrowed = filteredCoins.reduce((sum, coin) => sum + (coin.total_volume || 0), 0);
+    const lentOut = marketSize > 0 ? ((totalBorrowed / marketSize) * 100).toFixed(2) : 0;
+    
+    return { marketSize, totalBorrowed, lentOut };
+  }, [filteredCoins]);
 
   // Render different pages based on currentPage
   const renderPage = () => {
@@ -134,9 +146,13 @@ function App() {
       case 'landing':
         return (
           <div>
-            <HeroSection onNavigate={setCurrentPage} />
+            <HeroSection onNavigateToApp={() => setCurrentPage('marketplace')} />
             <Features />
-            <CTASection />
+            <Reputation />
+            <FaucetModule />
+            <BuiltOnAptos />
+            <CTASection onNavigateToApp={() => setCurrentPage('marketplace')} />
+            <Footer />
           </div>
         );
 
@@ -144,9 +160,9 @@ function App() {
         return (
           <div className="max-w-7xl mx-auto px-4 space-y-6">
             <SummaryHeader
-              marketSize={marketSize}
-              totalBorrowed={totalBorrowed}
-              lentOut={lentOut}
+              marketSize={marketStats.marketSize}
+              totalBorrowed={marketStats.totalBorrowed}
+              lentOut={marketStats.lentOut}
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -281,15 +297,26 @@ function App() {
   };
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <NavBar 
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        walletAddress={walletAddress}
-        onWalletConnect={handleWalletConnect}
-      />
-      {renderPage()}
-    </div>
+    <ErrorBoundary>
+      <div className={`min-h-screen bg-grid transition-colors duration-300 ${currentPage === 'landing' ? 'bg-black text-white' : 'bg-gray-50 dark:bg-gray-900'}`}>
+        {currentPage === 'landing' ? (
+          <LandingNavbar 
+            onNavigateToApp={() => setCurrentPage('marketplace')}
+            onWalletConnect={() => handleWalletConnect({ address: '0x1234...abcd' })}
+          />
+        ) : (
+          <NavBar 
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            walletAddress={walletAddress}
+            onWalletConnect={handleWalletConnect}
+          />
+        )}
+        <main className="relative z-10">
+          {renderPage()}
+        </main>
+      </div>
+    </ErrorBoundary>
   );
 }
 
