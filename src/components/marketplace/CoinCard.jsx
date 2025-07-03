@@ -1,4 +1,3 @@
-// CoinCard.jsx
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import {
@@ -9,29 +8,72 @@ import {
   PointElement,
   Tooltip,
 } from 'chart.js';
+import { TrendingUp, BarChart2, Coins, CircleDollarSign, Package } from 'lucide-react';
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip);
 
 function CoinCard({ coin, chartRange, onTrade }) {
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md transition">
-      <div className="flex items-center gap-4 mb-4">
-        <img src={coin.image} alt={coin.name} className="w-10 h-10" />
+    <div className="w-full max-w-sm bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-5 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 transition-all space-y-3">
+      {/* Coin Header */}
+      <div className="flex items-center gap-4">
+        <img src={coin.image} alt={coin.name} className="w-10 h-10 rounded-full border border-white/20" />
         <div>
-          <h2 className="text-xl font-bold">{coin.name}</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 uppercase">{coin.symbol}</p>
+          <h2 className="text-xl font-bold text-white">{coin.name}</h2>
+          <p className="text-xs uppercase text-white/50">{coin.symbol}</p>
         </div>
       </div>
 
-      <p>💰 Price: ${coin.current_price.toLocaleString()}</p>
-      <p>📈 24h Change: {coin.price_change_percentage_24h?.toFixed(2)}%</p>
-      <p>📊 Market Cap: ${coin.market_cap.toLocaleString()}</p>
-      <p>🔢 Volume: ${coin.total_volume.toLocaleString()}</p>
-      <p>🪙 Circulating: {coin.circulating_supply.toLocaleString()}</p>
-      <p>📦 Total Supply: {coin.total_supply?.toLocaleString() || 'N/A'}</p>
+      {/* Coin Info */}
+      <div className="text-sm text-white/80 space-y-1">
+        <div className="flex justify-between">
+          <span className="flex items-center gap-1">
+            <CircleDollarSign className="w-4 h-4" /> Price:
+          </span>
+          <span className="font-semibold text-white">${coin.current_price.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="flex items-center gap-1">
+            <TrendingUp className="w-4 h-4" /> 24h Change:
+          </span>
+          <span
+            className={`font-semibold ${
+              coin.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
+            }`}
+          >
+            {coin.price_change_percentage_24h?.toFixed(2)}%
+          </span>
+        </div>
+        <div className="flex justify-between">
+          <span className="flex items-center gap-1">
+            <BarChart2 className="w-4 h-4" /> Market Cap:
+          </span>
+          <span className="font-semibold text-white">${coin.market_cap.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="flex items-center gap-1">
+            <Coins className="w-4 h-4" /> Volume:
+          </span>
+          <span className="font-semibold text-white">${coin.total_volume.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="flex items-center gap-1">
+            <Package className="w-4 h-4" /> Circulating:
+          </span>
+          <span className="font-semibold text-white">{coin.circulating_supply.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="flex items-center gap-1">
+            <Package className="w-4 h-4 opacity-60" /> Total Supply:
+          </span>
+          <span className="font-semibold text-white">
+            {coin.total_supply?.toLocaleString() || 'N/A'}
+          </span>
+        </div>
+      </div>
 
-      {/* Price Chart */}
-      <div className="h-24 mt-2">
+      {/* Sparkline Chart */}
+      <div className="h-24 mt-1">
         <Line
           data={{
             labels: Array(coin.sparkline_in_7d?.price?.length || 0).fill(''),
@@ -52,17 +94,17 @@ function CoinCard({ coin, chartRange, onTrade }) {
         />
       </div>
 
-      {/* Buy / Sell Buttons */}
-      <div className="mt-4 flex justify-between">
+      {/* Trade Buttons */}
+      <div className="flex justify-between pt-2">
         <button
           onClick={() => onTrade(coin, true)}
-          className="px-4 py-1 bg-green-600 text-white rounded shadow hover:bg-green-700"
+          className="px-4 py-1.5 text-sm bg-green-600 text-white rounded shadow hover:bg-green-700 transition"
         >
           Buy
         </button>
         <button
           onClick={() => onTrade(coin, false)}
-          className="px-4 py-1 bg-red-600 text-white rounded shadow hover:bg-red-700"
+          className="px-4 py-1.5 text-sm bg-red-600 text-white rounded shadow hover:bg-red-700 transition"
         >
           Sell
         </button>
@@ -72,4 +114,3 @@ function CoinCard({ coin, chartRange, onTrade }) {
 }
 
 export default CoinCard;
-

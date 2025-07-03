@@ -1,5 +1,5 @@
-// src/components/marketplace/TradeInterface.jsx
 import React, { useState } from 'react';
+import { HandCoins, Handshake, ShieldAlert, Wallet, Banknote, Layers } from 'lucide-react';
 
 const TradeInterface = ({ selectedAsset }) => {
   const [tradeType, setTradeType] = useState('borrow');
@@ -15,9 +15,9 @@ const TradeInterface = ({ selectedAsset }) => {
   ];
 
   const collateralOptions = [
-    { value: 'apt', label: 'APT Token', ltv: '80%', icon: '🔴' },
-    { value: 'nft', label: 'NFT Collection', ltv: '60%', icon: '🖼️' },
-    { value: 'lp', label: 'LP Tokens', ltv: '70%', icon: '💧' }
+    { value: 'apt', label: 'APT Token', ltv: '80%', icon: <Wallet className="w-5 h-5 text-blue-400" /> },
+    { value: 'nft', label: 'NFT Collection', ltv: '60%', icon: <Layers className="w-5 h-5 text-pink-400" /> },
+    { value: 'lp', label: 'LP Tokens', ltv: '70%', icon: <Banknote className="w-5 h-5 text-green-400" /> }
   ];
 
   const calculateInterest = () => {
@@ -35,18 +35,20 @@ const TradeInterface = ({ selectedAsset }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-          💹 Trade Interface
+    <div className="w-full max-w-3xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 transition-all space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h3 className="text-2xl font-bold text-white flex items-center gap-2">
+          {tradeType === 'borrow' ? <HandCoins className="w-5 h-5" /> : <Handshake className="w-5 h-5" />}
+          {tradeType === 'borrow' ? 'Borrowing' : 'Lending'} Interface
         </h3>
-        <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+        <div className="flex bg-white/10 backdrop-blur-md rounded-lg p-1">
           <button
             onClick={() => setTradeType('borrow')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              tradeType === 'borrow' 
-                ? 'bg-blue-600 text-white' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              tradeType === 'borrow'
+                ? 'bg-blue-600 text-white'
+                : 'text-white/60 hover:text-white'
             }`}
           >
             Borrow
@@ -54,9 +56,9 @@ const TradeInterface = ({ selectedAsset }) => {
           <button
             onClick={() => setTradeType('lend')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-              tradeType === 'lend' 
-                ? 'bg-green-600 text-white' 
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+              tradeType === 'lend'
+                ? 'bg-green-600 text-white'
+                : 'text-white/60 hover:text-white'
             }`}
           >
             Lend
@@ -64,136 +66,126 @@ const TradeInterface = ({ selectedAsset }) => {
         </div>
       </div>
 
-      <div className="space-y-6">
-        {/* Amount Input */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            {tradeType === 'borrow' ? 'Borrow Amount' : 'Lend Amount'} (USD)
-          </label>
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">$</span>
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="0.00"
-              className="w-full pl-8 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
+      {/* Amount Input */}
+      <div>
+        <label className="block text-sm font-medium text-white/70 mb-2">
+          {tradeType === 'borrow' ? 'Borrow Amount' : 'Lend Amount'} (USD)
+        </label>
+        <div className="relative">
+          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60">$</span>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="0.00"
+            className="w-full pl-8 pr-4 py-3 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md text-white placeholder:text-white/40 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          />
         </div>
+      </div>
 
-        {/* Duration Selection */}
+      {/* Duration Selection */}
+      <div>
+        <label className="block text-sm font-medium text-white/70 mb-2">Loan Duration</label>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {durations.map((dur) => (
+            <button
+              key={dur.value}
+              onClick={() => setDuration(dur.value)}
+              className={`p-3 rounded-lg border text-left transition-all ${
+                duration === dur.value
+                  ? 'border-blue-400 bg-white/10 text-white'
+                  : 'border-white/10 text-white/70 hover:border-white/20'
+              }`}
+            >
+              <div className="font-medium">{dur.label}</div>
+              <div className="text-xs">{dur.apr} APR</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Collateral Type */}
+      {tradeType === 'borrow' && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Loan Duration
-          </label>
-          <div className="grid grid-cols-2 gap-2">
-            {durations.map((dur) => (
-              <button
-                key={dur.value}
-                onClick={() => setDuration(dur.value)}
-                className={`p-3 rounded-lg border transition-colors ${
-                  duration === dur.value
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
-                    : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+          <label className="block text-sm font-medium text-white/70 mb-2">Collateral Type</label>
+          <div className="space-y-2">
+            {collateralOptions.map((option) => (
+              <label
+                key={option.value}
+                className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
+                  collateralType === option.value
+                    ? 'border-blue-400 bg-white/10'
+                    : 'border-white/10 hover:border-white/20'
                 }`}
               >
-                <div className="font-medium text-gray-900 dark:text-white">
-                  {dur.label}
+                <input
+                  type="radio"
+                  name="collateral"
+                  value={option.value}
+                  checked={collateralType === option.value}
+                  onChange={(e) => setCollateralType(e.target.value)}
+                  className="sr-only"
+                />
+                {option.icon}
+                <div>
+                  <div className="font-medium text-white">{option.label}</div>
+                  <div className="text-xs text-white/60">Max LTV: {option.ltv}</div>
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">
-                  {dur.apr} APR
-                </div>
-              </button>
+              </label>
             ))}
           </div>
         </div>
+      )}
 
-        {/* Collateral Type (for borrowing) */}
-        {tradeType === 'borrow' && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Collateral Type
-            </label>
-            <div className="space-y-2">
-              {collateralOptions.map((option) => (
-                <label
-                  key={option.value}
-                  className={`flex items-center p-3 rounded-lg border cursor-pointer transition-colors ${
-                    collateralType === option.value
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="collateral"
-                    value={option.value}
-                    checked={collateralType === option.value}
-                    onChange={(e) => setCollateralType(e.target.value)}
-                    className="sr-only"
-                  />
-                  <span className="text-xl mr-3">{option.icon}</span>
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-900 dark:text-white">
-                      {option.label}
-                    </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                      Max LTV: {option.ltv}
-                    </div>
-                  </div>
-                </label>
-              ))}
+      {/* Loan Summary */}
+      {amount && (
+        <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+          <h4 className="font-semibold text-white mb-3">
+            {tradeType === 'borrow' ? 'Loan Summary' : 'Lending Summary'}
+          </h4>
+          <div className="space-y-2 text-sm text-white/80">
+            <div className="flex justify-between">
+              <span>Principal:</span>
+              <span className="font-medium text-white">${amount}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Interest:</span>
+              <span className="font-medium text-white">${calculateInterest()}</span>
+            </div>
+            <div className="flex justify-between border-t border-white/10 pt-2">
+              <span className="font-semibold text-white">
+                Total {tradeType === 'borrow' ? 'Repayment' : 'Return'}:
+              </span>
+              <span className="font-bold text-white">${calculateTotal()}</span>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Loan Summary */}
-        {amount && (
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-            <h4 className="font-medium text-gray-900 dark:text-white mb-3">
-              {tradeType === 'borrow' ? 'Loan Summary' : 'Lending Summary'}
-            </h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Principal:</span>
-                <span className="font-medium text-gray-900 dark:text-white">${amount}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-400">Interest:</span>
-                <span className="font-medium text-gray-900 dark:text-white">${calculateInterest()}</span>
-              </div>
-              <div className="flex justify-between border-t border-gray-300 dark:border-gray-600 pt-2">
-                <span className="font-medium text-gray-900 dark:text-white">
-                  Total {tradeType === 'borrow' ? 'Repayment' : 'Return'}:
-                </span>
-                <span className="font-bold text-gray-900 dark:text-white">${calculateTotal()}</span>
-              </div>
-            </div>
-          </div>
-        )}
+      {/* Action Button */}
+      <button
+        disabled={!amount}
+        className={`w-full py-3 rounded-lg font-semibold transition-all ${
+          amount
+            ? tradeType === 'borrow'
+              ? 'bg-blue-600 hover:bg-blue-700 text-white'
+              : 'bg-green-600 hover:bg-green-700 text-white'
+            : 'bg-white/10 text-white/40 cursor-not-allowed'
+        }`}
+      >
+        {tradeType === 'borrow' ? 'Request Loan' : 'Start Lending'}
+      </button>
 
-        {/* Action Button */}
-        <button
-          disabled={!amount}
-          className={`w-full py-3 rounded-lg font-medium transition-colors ${
-            amount
-              ? tradeType === 'borrow'
-                ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                : 'bg-green-600 hover:bg-green-700 text-white'
-              : 'bg-gray-300 dark:bg-gray-600 text-gray-500 cursor-not-allowed'
-          }`}
-        >
-          {tradeType === 'borrow' ? '💰 Request Loan' : '🏦 Start Lending'}
-        </button>
-
-        {/* Risk Warning */}
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-          <div className="text-sm text-yellow-800 dark:text-yellow-200">
-            ⚠️ <strong>Risk Warning:</strong> {tradeType === 'borrow' 
-              ? 'Failure to repay loans may result in collateral liquidation.' 
-              : 'Lending involves smart contract risks and potential borrower default.'}
-          </div>
+      {/* Risk Warning */}
+      <div className="bg-yellow-100/10 border border-yellow-300/20 dark:border-yellow-800 rounded-lg p-3">
+        <div className="text-sm text-yellow-300 flex items-center gap-2">
+          <ShieldAlert className="w-4 h-4" />
+          <span>
+            <strong>Risk Warning:</strong>{' '}
+            {tradeType === 'borrow'
+              ? 'Failure to repay may result in collateral liquidation.'
+              : 'Lending involves smart contract risks and borrower default.'}
+          </span>
         </div>
       </div>
     </div>

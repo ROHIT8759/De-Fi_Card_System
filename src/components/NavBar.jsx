@@ -44,8 +44,8 @@ function NavBar({ currentPage, setCurrentPage, walletAddress, onWalletConnect })
                     onClick={() => setCurrentPage(item.id)}
                     className={`text-sm font-medium transition-all relative group px-3 py-2 rounded-lg ${
                       currentPage === item.id 
-                        ? 'text-cyan-400 bg-cyan-400/10' 
-                        : 'text-white/80 hover:text-cyan-300 hover:bg-white/5'
+                        ? 'text-cyan-400' 
+                        : 'text-white/80 hover:text-cyan-300'
                     }`}
                   >
                     {item.label}

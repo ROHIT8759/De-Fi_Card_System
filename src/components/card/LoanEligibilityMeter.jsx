@@ -26,7 +26,8 @@ const LoanEligibilityMeter = ({ score, factors }) => {
   const eligibilityFactors = factors || defaultFactors;
 
   return (
-    <div className="bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md p-6 shadow-lg shadow-cyan-500/10 space-y-8">
+    <div className="w-[360px] bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md p-6 shadow-lg shadow-cyan-500/10 space-y-8">
+
       <h3 className="text-xl font-bold text-white">Loan Eligibility</h3>
 
       {/* Stylized Circular Score Meter */}

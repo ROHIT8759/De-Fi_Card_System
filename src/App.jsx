@@ -49,6 +49,7 @@ function App() {
   const [sortBy, setSortBy] = useState('rank');
   const [chartRange, setChartRange] = useState('7d');
   const [viewMode, setViewMode] = useState('cards');
+  const [showBorrowPopup, setShowBorrowPopup] = useState(false);
 
   const coinList = 'bitcoin,ethereum,uniswap,aave,curve-dao-token,chainlink,litecoin,maker,compound-governance-token,the-graph,optimism,arbitrum,avalanche-2,solana,toncoin';
 
@@ -162,132 +163,146 @@ function App() {
 
       case 'marketplace':
         return (
-          <div className="max-w-7xl mx-auto space-y-6">
+          <div className=" pt-10 relative max-w-7xl mx-auto space-y-6">
+            {/* Summary Header */}
             <SummaryHeader
               marketSize={marketStats.marketSize}
               totalBorrowed={marketStats.totalBorrowed}
               lentOut={marketStats.lentOut}
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
-                <div className="flex justify-end">
-                  <button
-                    onClick={() => setViewMode(viewMode === 'cards' ? 'table' : 'cards')}
-                    className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm"
-                  >
-                    Toggle View: {viewMode === 'cards' ? 'Table' : 'Cards'}
-                  </button>
-                </div>
+            {/* Filters + Toggle */}
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              <Filters
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                chartRange={chartRange}
+                setChartRange={setChartRange}
+              />
 
-                <Filters
-                  searchTerm={searchTerm}
-                  setSearchTerm={setSearchTerm}
-                  sortBy={sortBy}
-                  setSortBy={setSortBy}
-                  chartRange={chartRange}
-                  setChartRange={setChartRange}
-                />
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setViewMode(viewMode === 'cards' ? 'table' : 'cards')}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm"
+                >
+                  Toggle View: {viewMode === 'cards' ? 'Table' : 'Cards'}
+                </button>
 
-                {filteredCoins.length > 0 ? (
-                  viewMode === 'cards' ? (
-                    <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-2">
-                      {filteredCoins.slice(0, 6).map((coin) => (
-                        <CoinCard
-                          key={coin.id}
-                          coin={coin}
-                          chartRange={chartRange}
-                          onTrade={handleTrade}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="overflow-x-auto">
-                      <AssetTable coins={filteredCoins.slice(0, 10)} onTrade={handleTrade} />
-                    </div>
-                  )
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-                    <p>Loading coin data...</p>
-                  </div>
-                )}
-              </div>
-
-              <div className="lg:col-span-1">
-                <TradeInterface />
+                <button
+                  onClick={() => setShowBorrowPopup(true)}
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm"
+                >
+                  Open Borrowing
+                </button>
               </div>
             </div>
+
+            {/* Coin View */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white/5 border border-white/10 rounded-lg p-6 md:p-8 shadow-lg pb-12">
+              {filteredCoins.length > 0 ? (
+                viewMode === 'cards' ? (
+                  <>
+                    {filteredCoins.slice(0, 6).map((coin) => (
+                      <CoinCard
+                        key={coin.id}
+                        coin={coin}
+                        chartRange={chartRange}
+                        onTrade={handleTrade}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <AssetTable coins={filteredCoins.slice(0, 10)} onTrade={handleTrade} />
+                  </div>
+                )
+            ) : (
+              <div className="text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+                <p>Loading coin data...</p>
+              </div>
+            )}
+          </div>
+
+            {/* Borrowing Popup Modal */}
+            {showBorrowPopup && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                <div className="bg-white dark:bg-gray-900/80 border border-gray-300 dark:border-gray-700 rounded-2xl p-6 shadow-2xl max-w-lg w-full relative">
+                  <button
+                    onClick={() => setShowBorrowPopup(false)}
+                    className="absolute top-3 right-3 text-gray-500 hover:text-white"
+                  >
+                    ✕
+                  </button>
+                  <TradeInterface />
+                </div>
+              </div>
+            )}
           </div>
         );
+
+
 
       case 'dashboard':
         return (
-          <div className="max-w-7xl mx-auto space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 space-y-6">
-                <ProfileDashboard />
-                <PersonalDetails />
-              </div>
-              <div className="space-y-6">
-                <BalanceOverview />
+          <div className="min-h-screen w-full text-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white/5 border border-white/10 rounded-lg p-6 md:p-8 shadow-lg">
+                <div className="lg:col-span-2 space-y-6">
+                  <ProfileDashboard />
+                  <PersonalDetails />
+                </div>
+                <div className="space-y-6">
+                  <BalanceOverview />
+                </div>
               </div>
             </div>
           </div>
         );
 
+
       case 'cards':
         return (
-          <section className="pt-20 pb-24 space-y-12 md:space-y-20 text-white">
+          <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto text-white space-y-12">
             {/* 💳 Header */}
-            <div className="text-center space-y-3">
-              <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-glow">
+            <div className="text-center space-y-2">
+              <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-fuchsia-400 via-blue-400 to-teal-300 bg-clip-text text-transparent drop-shadow-md opacity-90">
                 Loan Management
               </h1>
-              <p className="text-white/60 text-base md:text-lg max-w-xl mx-auto px-4">
+              <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto">
                 Manage your active loans, request new ones, and track your eligibility.
               </p>
             </div>
 
-            {/* 📝 Form + 📈 Eligibility */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-start">
-              {/* Request Form */}
-              <div className="lg:col-span-2">
-                <LoanRequestForm />
-              </div>
-
-              {/* Eligibility Meter */}
-              <div className="lg:sticky lg:top-32">
-                <LoanEligibilityMeter score={75} />
-              </div>
-            </div>
-
-            {/* 📋 Active Loans */}
-            <div className="space-y-6 md:space-y-10">
-              <h2 className="text-2xl md:text-3xl font-semibold bg-gradient-to-r from-purple-300 via-cyan-300 to-pink-300 bg-clip-text text-transparent drop-shadow-glow">
-                📋 Your Active Loans
-              </h2>
-
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-start">
-                {/* Big Loan Card - left side */}
-                <div className="lg:col-span-2">
+            <div className="w-full flex justify-center items-start gap-10 px-4">
+              {/* LEFT COLUMN: Request Form + Big Loan Card */}
+              <div className="flex flex-col gap-6 w-[640px]">
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6 md:p-8 shadow-lg">
+                  <LoanRequestForm />
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6 md:p-8 shadow-lg">
                   <BigLoanCard loan={mockLoans[0]} />
                 </div>
+              </div>
 
-                {/* Small Loan Cards - right side */}
-                <div className="flex flex-col gap-4 md:gap-6">
-                  <SmallLoanCard loan={mockLoans[1]} />
-                  <SmallLoanCard loan={mockLoans[2]} />
+              {/* RIGHT COLUMN: Eligibility Meter + Small Loan Cards */}
+              <div className="flex flex-col gap-6 w-[425px]">
+                <div className="bg-white/5 border border-white/10 rounded-lg px-8 py-8 shadow-lg">
+                  <LoanEligibilityMeter score={75} />
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6 md:p-8 shadow-lg h-[382px]">
+                  <div className="flex flex-col space-y-4 h-full">
+                    <SmallLoanCard loan={mockLoans[1]} />
+                    <SmallLoanCard loan={mockLoans[2]} />
+                  </div>
                 </div>
               </div>
             </div>
           </section>
         );
-
-
-
-
-
+        
       default:
         return (
           <div className="max-w-7xl mx-auto px-4 text-center py-20">
@@ -304,12 +319,15 @@ function App() {
   
   return (
     <ErrorBoundary>
-      <div className={`w-full min-h-screen relative ${
-        currentPage === 'landing' 
-          ? 'bg-black text-white bg-grid' 
-          : 'bg-gray-900 text-white bg-grid'
-      }`} style={{ minHeight: '100vh', width: '100vw' }}>
-        {/* Navigation - responsive for mobile */}
+      <div
+        className={`w-full min-h-screen relative ${
+          currentPage === 'landing' || currentPage === 'cards' || currentPage === 'dashboard' || currentPage === 'marketplace'
+            ? 'bg-black text-white bg-grid'
+            : 'bg-gray-900 text-white'
+        }`}
+        style={{ minHeight: '100vh', width: '100vw' }}
+      >
+        {/* 🌐 Navigation Bar */}
         <div className="relative z-20 w-full">
           {currentPage === 'landing' ? (
             <LandingNavbar 
@@ -325,14 +343,15 @@ function App() {
             />
           )}
         </div>
-        
-        {/* Main content with better mobile structure */}
-        <main className={`relative z-10 w-full min-h-screen ${
-          currentPage === 'landing' 
-            ? 'bg-black text-white' 
-            : 'bg-gray-900 text-white pt-16 md:pt-20'
-        }`} style={{ minHeight: '100vh', width: '100%' }}>
-          <div className={currentPage === 'landing' ? 'w-full' : 'px-4 sm:px-6 lg:px-8 w-full'}>
+
+        {/* 🧠 Main Content Area */}
+        <main
+          className={`relative z-10 w-full min-h-screen ${
+            currentPage !== 'landing' ? 'pt-16 md:pt-20' : ''
+          }`}
+          style={{ minHeight: '100vh', width: '100%' }}
+        >
+          <div className="w-full px-4 sm:px-6 lg:px-8">
             {renderPage()}
           </div>
         </main>
