@@ -2,8 +2,20 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link as ScrollLink } from 'react-scroll';
 
-export default function LandingNavbar({ onWalletConnect }) {
+export default function LandingNavbar({ onWalletConnect, walletAddress, onWalletDisconnect }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleWalletClick = () => {
+    if (walletAddress) {
+      // If wallet is connected, show option to disconnect
+      if (onWalletDisconnect) {
+        onWalletDisconnect();
+      }
+    } else {
+      // If no wallet connected, open connection modal
+      onWalletConnect();
+    }
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 md:top-4 md:left-4 md:right-4 lg:left-20 lg:right-20">
@@ -32,10 +44,13 @@ export default function LandingNavbar({ onWalletConnect }) {
             </li>
             <li>
               <button 
-                onClick={onWalletConnect}
+                onClick={handleWalletClick}
                 className="px-4 lg:px-6 py-2 text-sm lg:text-base rounded-full bg-gradient-to-r from-cyan-500/80 to-purple-500/80 hover:from-cyan-400 hover:to-purple-400 text-white transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/25 hover:scale-105 border border-cyan-400/30 backdrop-blur-sm"
               >
-                Connect Wallet
+                {walletAddress 
+                  ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
+                  : 'Connect Wallet'
+                }
               </button>
             </li>
           </ul>
@@ -77,12 +92,15 @@ export default function LandingNavbar({ onWalletConnect }) {
                   </ScrollLink>
                   <button 
                     onClick={() => {
-                      onWalletConnect();
+                      handleWalletClick();
                       setIsOpen(false);
                     }}
                     className="w-full py-3 px-4 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 font-medium"
                   >
-                    Connect Wallet
+                    {walletAddress 
+                      ? `${walletAddress.slice(0, 8)}...${walletAddress.slice(-6)}`
+                      : 'Connect Wallet'
+                    }
                   </button>
                 </div>
               </div>
