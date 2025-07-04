@@ -15,14 +15,18 @@ function NavBar({ currentPage, setCurrentPage, walletAddress, onWalletConnect })
 
   const handleWalletClick = () => {
     if (walletAddress) {
+      // If wallet is connected, disconnect it
       onWalletConnect('');
     } else {
+      // If no wallet connected, open connection modal
       setShowWalletModal(true);
     }
   };
 
   const handleWalletConnect = (walletData) => {
-    onWalletConnect(walletData.address);
+    console.log('NavBar.jsx - handleWalletConnect called with:', walletData);
+    // Pass the full wallet data to the parent component
+    onWalletConnect(walletData);
     setShowWalletModal(false);
   };
 
@@ -132,7 +136,8 @@ function NavBar({ currentPage, setCurrentPage, walletAddress, onWalletConnect })
       {/* Wallet Modal */}
       {showWalletModal && (
         <WalletConnectionModal
-          onConnect={handleWalletConnect}
+          isOpen={showWalletModal}
+          onWalletConnect={handleWalletConnect}
           onClose={() => setShowWalletModal(false)}
         />
       )}

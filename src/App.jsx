@@ -36,12 +36,22 @@ import LoanRequestForm from './components/card/LoanRequestForm';
 import LoanEligibilityMeter from './components/card/LoanEligibilityMeter';
 
 // Import wallet components
-// SimpleWalletButton removed - not used and file doesn't exist
+import WalletConnectionModal from './components/wallet/WalletConnectionModal';
+import { getSavedWalletConnection, clearSavedWalletConnection } from './components/wallet/walletConfig';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('landing');
   const [walletAddress, setWalletAddress] = useState('');
+  const [showWalletModal, setShowWalletModal] = useState(false);
   
+  // Load saved wallet connection on app start
+  useEffect(() => {
+    const savedWallet = getSavedWalletConnection();
+    if (savedWallet && savedWallet.address) {
+      setWalletAddress(savedWallet.address);
+    }
+  }, []);
+
   // Dashboard/Marketplace state
   const [coins, setCoins] = useState([]);
   const [filteredCoins, setFilteredCoins] = useState([]);
@@ -54,8 +64,34 @@ function App() {
   const coinList = 'bitcoin,ethereum,uniswap,aave,curve-dao-token,chainlink,litecoin,maker,compound-governance-token,the-graph,optimism,arbitrum,avalanche-2,solana,toncoin';
 
   // Mock wallet connection with useCallback for optimization
-  const handleWalletConnect = useCallback((address) => {
-    setWalletAddress(address);
+  const handleWalletConnect = useCallback((walletData) => {
+    console.log('App.jsx - handleWalletConnect called with:', walletData);
+    
+    // Handle wallet connection data from the modal
+    if (walletData && walletData.address) {
+      console.log('App.jsx - Setting wallet address:', walletData.address);
+      setWalletAddress(walletData.address);
+      setShowWalletModal(false);
+    } else if (typeof walletData === 'string') {
+      // Handle direct address string (for backwards compatibility)
+      console.log('App.jsx - Setting wallet address from string:', walletData);
+      setWalletAddress(walletData);
+    } else {
+      // Clear wallet connection
+      console.log('App.jsx - Clearing wallet connection');
+      setWalletAddress('');
+    }
+  }, []);
+
+  // Open wallet connection modal
+  const handleWalletModalOpen = useCallback(() => {
+    setShowWalletModal(true);
+  }, []);
+
+  // Handle wallet disconnect
+  const handleWalletDisconnect = useCallback(() => {
+    setWalletAddress('');
+    clearSavedWalletConnection();
   }, []);
 
   // Fetch coin data when needed
@@ -332,7 +368,9 @@ function App() {
           {currentPage === 'landing' ? (
             <LandingNavbar 
               onNavigateToApp={() => setCurrentPage('marketplace')}
-              onWalletConnect={() => handleWalletConnect({ address: '0x1234...abcd' })}
+              onWalletConnect={handleWalletModalOpen}
+              onWalletDisconnect={handleWalletDisconnect}
+              walletAddress={walletAddress}
             />
           ) : (
             <NavBar 
@@ -355,6 +393,16 @@ function App() {
             {renderPage()}
           </div>
         </main>
+
+        {/* Wallet Connection Modal */}
+        {showWalletModal && (
+          <WalletConnectionModal
+            isOpen={showWalletModal}
+            onClose={() => setShowWalletModal(false)}
+            onWalletConnect={handleWalletConnect}
+            isLandingPage={currentPage === 'landing'}
+          />
+        )}
       </div>
     </ErrorBoundary>
   );

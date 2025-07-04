@@ -186,3 +186,53 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 } */
+
+/* Wallet Modal Animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out forwards;
+}
+
+/* Better wallet modal positioning */
+.wallet-modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  z-index: 60;
+}
+
+@media (max-height: 600px) {
+  .wallet-modal-container {
+    padding-top: 2rem;
+  }
+}
+
+@media (min-height: 800px) {
+  .wallet-modal-container {
+    padding-top: 6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .wallet-modal-container {
+    padding-top: 4rem;
+  }
+}
