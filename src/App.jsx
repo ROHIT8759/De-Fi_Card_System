@@ -171,8 +171,9 @@ function App() {
               lentOut={marketStats.lentOut}
             />
 
-            {/* Filters + Toggle */}
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            {/* Filters + Toggle Buttons */}
+            <div className="w-full flex flex-col md:flex-row items-center md:items-start justify-between gap-4">
+              {/* Filters Block */}
               <Filters
                 searchTerm={searchTerm}
                 setSearchTerm={setSearchTerm}
@@ -182,17 +183,18 @@ function App() {
                 setChartRange={setChartRange}
               />
 
-              <div className="flex gap-2">
+              {/* Toggle + Borrow Buttons */}
+              <div className="flex gap-2 shrink-0">
                 <button
                   onClick={() => setViewMode(viewMode === 'cards' ? 'table' : 'cards')}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm min-w-[150px]"
                 >
                   Toggle View: {viewMode === 'cards' ? 'Table' : 'Cards'}
                 </button>
 
                 <button
                   onClick={() => setShowBorrowPopup(true)}
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm"
+                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm min-w-[150px]"
                 >
                   Open Borrowing
                 </button>
@@ -200,10 +202,10 @@ function App() {
             </div>
 
             {/* Coin View */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white/5 border border-white/10 rounded-lg p-6 md:p-8 shadow-lg pb-12">
+            <div className="bg-white/5 border border-white/10 rounded-lg p-6 md:p-8 shadow-lg pb-12">
               {filteredCoins.length > 0 ? (
                 viewMode === 'cards' ? (
-                  <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                     {filteredCoins.slice(0, 6).map((coin) => (
                       <CoinCard
                         key={coin.id}
@@ -212,24 +214,24 @@ function App() {
                         onTrade={handleTrade}
                       />
                     ))}
-                  </>
+                  </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <AssetTable coins={filteredCoins.slice(0, 10)} onTrade={handleTrade} />
                   </div>
                 )
-            ) : (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-                <p>Loading coin data...</p>
-              </div>
-            )}
-          </div>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+                  <p>Loading coin data...</p>
+                </div>
+              )}
+            </div>
 
             {/* Borrowing Popup Modal */}
             {showBorrowPopup && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                <div className="bg-white dark:bg-gray-900/80 border border-gray-300 dark:border-gray-700 rounded-2xl p-6 shadow-2xl max-w-lg w-full relative">
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+                <div className="bg-white/5 border border-white/10 rounded-lg p-6 shadow-2xl w-[650px] relative">
                   <button
                     onClick={() => setShowBorrowPopup(false)}
                     className="absolute top-3 right-3 text-gray-500 hover:text-white"
