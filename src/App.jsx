@@ -1,5 +1,5 @@
 // All import statements stay the same
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import axios from "axios";
 import ErrorBoundary from "./components/ErrorBoundary";
 
@@ -265,39 +265,48 @@ function App() {
         );
       case "marketplace":
         return (
-          <div className="pt-10 max-w-7xl mx-auto space-y-6">
-            <div className="mt-20">
-              <SummaryHeader {...marketStats} />
-              <Filters
-                {...{
-                  searchTerm,
-                  setSearchTerm,
-                  sortBy,
-                  setSortBy,
-                  chartRange,
-                  setChartRange,
-                }}
-              />
-              <div className="flex justify-between gap-4">
+          <div className="pt-10 max-w-7xl mx-auto space-y-10 px-4 sm:px-6 lg:px-8">
+            <div className="space-y-8">
+              {/* Summary Header */}
+              
+                <SummaryHeader {...marketStats} />
+
+              {/* Filters */}
+              <div>
+                <Filters
+                  {...{
+                    searchTerm,
+                    setSearchTerm,
+                    sortBy,
+                    setSortBy,
+                    chartRange,
+                    setChartRange,
+                  }}
+                />
+              </div>
+
+              {/* Toggle & Action Buttons */}
+              <div className="flex flex-col sm:flex-row justify-between gap-4">
                 <button
                   onClick={() =>
                     setViewMode(viewMode === "cards" ? "table" : "cards")
                   }
-                  className="bg-indigo-600 px-4 py-2 rounded text-white"
+                  className="bg-indigo-600 hover:bg-indigo-700 transition px-4 py-2 rounded text-white"
                 >
                   Toggle View: {viewMode === "cards" ? "Table" : "Cards"}
                 </button>
                 <button
                   onClick={() => setShowBorrowPopup(true)}
-                  className="bg-emerald-600 px-4 py-2 rounded text-white"
+                  className="bg-emerald-600 hover:bg-emerald-700 transition px-4 py-2 rounded text-white"
                 >
                   Open Borrowing
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Coin Grid / Table */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {isLoadingCoins ? (
-                  <div className="col-span-full text-center py-10">
+                  <div className="col-span-full text-center py-10 text-lg text-gray-400">
                     Loading coins...
                   </div>
                 ) : coinsError ? (
@@ -314,16 +323,19 @@ function App() {
                     />
                   ))
                 ) : (
-                  <AssetTable coins={filteredCoins} onTrade={handleTrade} />
+                  <div className="col-span-full">
+                    <AssetTable coins={filteredCoins} onTrade={handleTrade} />
+                  </div>
                 )}
               </div>
 
+              {/* Borrow Modal */}
               {showBorrowPopup && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                  <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl max-w-lg w-full relative">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+                  <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl max-w-lg w-full relative overflow-hidden">
                     <button
                       onClick={() => setShowBorrowPopup(false)}
-                      className="absolute top-3 right-3 text-white"
+                      className="absolute top-3 right-3 text-white text-2xl hover:text-gray-400"
                     >
                       ✕
                     </button>
