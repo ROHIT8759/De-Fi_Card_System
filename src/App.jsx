@@ -253,7 +253,7 @@ function App() {
         return (
           <div className="min-h-screen w-full text-white">
             <div className="max-w-7xl mx-auto px-4 py-12 space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white/5 border border-white/10 rounded-lg p-6 shadow-lg">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white/5 border border-white/10 rounded-lg p-6 shadow-lg mt-20">
                 <div className="lg:col-span-2 space-y-6">
                   <ProfileDashboard {...walletData} />
                   <PersonalDetails {...walletData} />
@@ -266,77 +266,79 @@ function App() {
       case "marketplace":
         return (
           <div className="pt-10 max-w-7xl mx-auto space-y-6">
-            <SummaryHeader {...marketStats} />
-            <Filters
-              {...{
-                searchTerm,
-                setSearchTerm,
-                sortBy,
-                setSortBy,
-                chartRange,
-                setChartRange,
-              }}
-            />
-            <div className="flex justify-between gap-4">
-              <button
-                onClick={() =>
-                  setViewMode(viewMode === "cards" ? "table" : "cards")
-                }
-                className="bg-indigo-600 px-4 py-2 rounded text-white"
-              >
-                Toggle View: {viewMode === "cards" ? "Table" : "Cards"}
-              </button>
-              <button
-                onClick={() => setShowBorrowPopup(true)}
-                className="bg-emerald-600 px-4 py-2 rounded text-white"
-              >
-                Open Borrowing
-              </button>
-            </div>
+            <div className="mt-20">
+              <SummaryHeader {...marketStats} />
+              <Filters
+                {...{
+                  searchTerm,
+                  setSearchTerm,
+                  sortBy,
+                  setSortBy,
+                  chartRange,
+                  setChartRange,
+                }}
+              />
+              <div className="flex justify-between gap-4">
+                <button
+                  onClick={() =>
+                    setViewMode(viewMode === "cards" ? "table" : "cards")
+                  }
+                  className="bg-indigo-600 px-4 py-2 rounded text-white"
+                >
+                  Toggle View: {viewMode === "cards" ? "Table" : "Cards"}
+                </button>
+                <button
+                  onClick={() => setShowBorrowPopup(true)}
+                  className="bg-emerald-600 px-4 py-2 rounded text-white"
+                >
+                  Open Borrowing
+                </button>
+              </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {isLoadingCoins ? (
-                <div className="col-span-full text-center py-10">
-                  Loading coins...
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {isLoadingCoins ? (
+                  <div className="col-span-full text-center py-10">
+                    Loading coins...
+                  </div>
+                ) : coinsError ? (
+                  <div className="col-span-full text-center text-red-500">
+                    {coinsError}
+                  </div>
+                ) : viewMode === "cards" ? (
+                  filteredCoins.map((coin) => (
+                    <CoinCard
+                      key={coin.id}
+                      coin={coin}
+                      chartRange={chartRange}
+                      onTrade={handleTrade}
+                    />
+                  ))
+                ) : (
+                  <AssetTable coins={filteredCoins} onTrade={handleTrade} />
+                )}
+              </div>
+
+              {showBorrowPopup && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                  <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl max-w-lg w-full relative">
+                    <button
+                      onClick={() => setShowBorrowPopup(false)}
+                      className="absolute top-3 right-3 text-white"
+                    >
+                      ✕
+                    </button>
+                    <TradeInterface />
+                  </div>
                 </div>
-              ) : coinsError ? (
-                <div className="col-span-full text-center text-red-500">
-                  {coinsError}
-                </div>
-              ) : viewMode === "cards" ? (
-                filteredCoins.map((coin) => (
-                  <CoinCard
-                    key={coin.id}
-                    coin={coin}
-                    chartRange={chartRange}
-                    onTrade={handleTrade}
-                  />
-                ))
-              ) : (
-                <AssetTable coins={filteredCoins} onTrade={handleTrade} />
               )}
             </div>
-
-            {showBorrowPopup && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl max-w-lg w-full relative">
-                  <button
-                    onClick={() => setShowBorrowPopup(false)}
-                    className="absolute top-3 right-3 text-white"
-                  >
-                    ✕
-                  </button>
-                  <TradeInterface />
-                </div>
-              </div>
-            )}
           </div>
         );
       case "cards":
         return (
           <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto text-white space-y-12">
-            <div className="text-center space-y-2">
-              <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-fuchsia-400 via-blue-400 to-teal-300 bg-clip-text text-transparent drop-shadow-md opacity-90">
+            <div className="text-center space-y-2 mt-20">
+              <h1 className="p-2 text-3xl md:text-5xl font-bold bg-gradient-to-r from-fuchsia-400 via-blue-400 to-teal-300 bg-clip-text text-transparent drop-shadow-md opacity-90">
                 Loan Management
               </h1>
               <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto">
