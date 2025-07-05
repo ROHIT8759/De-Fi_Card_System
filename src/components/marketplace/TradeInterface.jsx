@@ -35,7 +35,7 @@ const TradeInterface = ({ selectedAsset }) => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 transition-all space-y-6">
+    <div className="w-[600px] max-w-3xl mx-auto bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 transition-all space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-2xl font-bold text-white flex items-center gap-2">

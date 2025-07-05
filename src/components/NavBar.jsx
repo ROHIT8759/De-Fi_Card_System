@@ -336,10 +336,10 @@ function NavBar({
   const { initTrustScore } = useTrustScore(); // 🔗 TrustScore hook
 
   const navItems = [
-    { id: 'landing', label: 'Home' },
-    { id: 'marketplace', label: 'Marketplace' },
-    { id: 'dashboard', label: 'Dashboard' },
-    { id: 'cards', label: 'Loan Cards' }
+    { id: 'landing', label: 'HOME' },
+    { id: 'marketplace', label: 'MARKETPLACE' },
+    { id: 'dashboard', label: 'DASHBOARD' },
+    { id: 'cards', label: 'LOAN CARDS' }
   ];
 
   const handleWalletClick = () => {
@@ -360,7 +360,7 @@ function NavBar({
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 md:top-4 md:left-4 md:right-4 lg:left-20 lg:right-20">
-        <div className="backdrop-blur-lg bg-gray-900/40 border-b-[1px] md:border-[1px] border-[#1820c4] shadow-[0_0_8px_rgba(0,255,255,0.4)] md:rounded-xl">
+        <div className="ackdrop-blur-lg bg-black/40 border-b-[1px] md:border-[1px] border-[#1820c4] shadow-[0_0_8px_rgba(0,255,255,0.4)] md:rounded-xl">
           <nav className="max-w-7xl mx-auto px-4 sm:px-6 py-4 md:py-3 lg:py-4 flex items-center justify-between text-white font-medium">
             <h1 className="text-xl sm:text-2xl font-bold tracking-wide text-accent font-lynq z-10">
               LYNQ
