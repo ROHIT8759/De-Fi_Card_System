@@ -236,3 +236,14 @@ button:focus-visible {
     padding-top: 4rem;
   }
 }
+/* Remove number input arrows in all browsers */
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner {
+  -moz-appearance: textfield;
+  /* Firefox */
+}

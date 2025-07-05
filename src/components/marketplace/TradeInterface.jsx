@@ -105,7 +105,7 @@ const TradeInterface = ({ selectedAsset }) => {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 placeholder="0.00"
-                className="w-full pl-8 pr-4 py-3 border border-white/20 rounded-lg bg-white/5 text-white placeholder:text-white/40 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full pl-8 pr-4 py-3 border border-white/20 rounded-lg bg-white/5 text-white placeholder:text-white/40 focus:ring-2 focus:ring-blue-500 focus:outline-none no-spinner"
               />
             </div>
           </div>
