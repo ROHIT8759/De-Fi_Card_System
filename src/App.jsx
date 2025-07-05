@@ -1500,55 +1500,29 @@ function App() {
             )}
           </div>
 
-            {/* Borrowing Popup Modal */}
-            {showBorrowPopup && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-                <div className="bg-white dark:bg-gray-900/80 border border-gray-300 dark:border-gray-700 rounded-2xl p-6 shadow-2xl max-w-lg w-full relative">
-                  <button
-                    onClick={() => setShowBorrowPopup(false)}
-                    className="absolute top-3 right-3 text-gray-500 hover:text-white"
-                  >
-                    ✕
-                  </button>
-                  <TradeInterface />
-                </div>
-              </div>
-            )}
-          </div>
-        );
-
-
-
-      case 'dashboard':
-        return (
-          <div className="min-h-screen w-full text-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 bg-white/5 border border-white/10 rounded-lg p-6 md:p-8 shadow-lg">
-                <div className="lg:col-span-2 space-y-6">
-                  <ProfileDashboard />
-                  <PersonalDetails />
-                </div>
-                <div className="space-y-6">
-                  <BalanceOverview />
-                </div>
+          {showBorrowPopup && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+              <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl max-w-lg w-full relative">
+                <button onClick={() => setShowBorrowPopup(false)} className="absolute top-3 right-3 text-white">✕</button>
+                <TradeInterface />
               </div>
             </div>
+          )}
+        </div>
+      );
+    }
+
+    if (currentPage === "cards") {
+      return (
+        <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto text-white space-y-12">
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-fuchsia-400 via-blue-400 to-teal-300 bg-clip-text text-transparent drop-shadow-md opacity-90">
+              Loan Management
+            </h1>
+            <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto">
+              Manage your active loans, request new ones, and track your eligibility.
+            </p>
           </div>
-        );
-
-
-      case 'cards':
-        return (
-          <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-12 max-w-7xl mx-auto text-white space-y-12">
-            {/* 💳 Header */}
-            <div className="text-center space-y-2">
-              <h1 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-fuchsia-400 via-blue-400 to-teal-300 bg-clip-text text-transparent drop-shadow-md opacity-90">
-                Loan Management
-              </h1>
-              <p className="text-white/70 text-base md:text-lg max-w-xl mx-auto">
-                Manage your active loans, request new ones, and track your eligibility.
-              </p>
-            </div>
 
           <div className="w-full flex flex-col lg:flex-row justify-center items-start gap-10 px-4">
             <div className="flex flex-col gap-6 w-full lg:w-[640px]">
