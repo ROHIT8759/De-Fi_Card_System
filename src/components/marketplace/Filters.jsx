@@ -18,8 +18,8 @@ function Filters({ searchTerm, setSearchTerm, sortBy, setSortBy, chartRange, set
         onChange={(e) => setSortBy(e.target.value)}
         className="w-full md:w-1/4 px-4 py-2 rounded-lg bg-white/5 text-white border border-white/10 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
       >
-        <option value="rank">Sort by Rank</option>
-        <option value="volume">Sort by Volume</option>
+        <option value="rank" className='text-black'>Sort by Rank</option>
+        <option value="volume" className='text-black'>Sort by Volume</option>
       </select>
 
       {/* Chart Range Dropdown */}
@@ -28,9 +28,9 @@ function Filters({ searchTerm, setSearchTerm, sortBy, setSortBy, chartRange, set
         onChange={(e) => setChartRange(e.target.value)}
         className="w-full md:w-1/4 px-4 py-2 rounded-lg bg-white/5 text-white border border-white/10 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
       >
-        <option value="1d">1 Day</option>
-        <option value="7d">7 Days</option>
-        <option value="30d">30 Days</option>
+        <option value="1d" className='text-black'>1 Day</option>
+        <option value="7d" className='text-black'>7 Days</option>
+        <option value="30d" className='text-black'>30 Days</option>
       </select>
     </div>
   );

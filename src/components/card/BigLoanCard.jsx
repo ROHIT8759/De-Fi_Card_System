@@ -4,7 +4,7 @@ const BigLoanCard = ({ loan }) => {
   return (
     <div className="w-full bg-white/5 rounded-2xl border border-white/10 backdrop-blur-md p-6 shadow-lg shadow-cyan-500/10 space-y-6">
       
-      {/* Header */}
+      Header
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-xl md:text-2xl font-bold text-white">
