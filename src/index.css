@@ -38,27 +38,23 @@ body {
 
 /* Mobile-specific aggressive fixes */
 @media (max-width: 768px) {
-
-  html,
-  body {
-    height: 100vh;
+  html, body {
+    height: 100vh ;
     width: 100vw;
     min-height: 100vh;
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
     background: transparent !important;
     overflow-x: hidden !important;
   }
-
+  
   /* Prevent any element from creating white space */
   * {
     max-width: 100vw !important;
   }
-
+  
   /* Force containers to full width */
-  .container,
-  .max-w-7xl,
-  .mx-auto {
+  .container, .max-w-7xl, .mx-auto {
     width: 100% !important;
     max-width: 100vw !important;
     margin-left: 0 !important;
@@ -66,7 +62,7 @@ body {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
-
+  
   /* Improve touch scrolling */
   body {
     -webkit-overflow-scrolling: touch;
@@ -76,10 +72,7 @@ body {
 
 /* Small mobile devices - even more aggressive */
 @media (max-width: 480px) {
-
-  html,
-  body,
-  #root {
+  html, body, #root {
     width: 100vw !important;
     min-width: 100vw !important;
     max-width: 100vw !important;
@@ -98,7 +91,7 @@ body {
     padding: 0 !important;
     background: transparent !important;
   }
-
+  
   .mobile-container {
     width: 100% !important;
     max-width: 100vw !important;
@@ -107,11 +100,11 @@ body {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
   }
-
+  
   .force-black-bg {
     background-color: #000000 !important;
   }
-
+  
   .no-white-overlay {
     background: transparent !important;
     width: 100vw !important;
@@ -200,7 +193,6 @@ button:focus-visible {
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
   }
-
   to {
     opacity: 1;
     transform: translateY(0) scale(1);

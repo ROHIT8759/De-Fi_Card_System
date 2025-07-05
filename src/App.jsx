@@ -268,8 +268,8 @@ function App() {
           <div className="pt-10 max-w-7xl mx-auto space-y-10 px-4 sm:px-6 lg:px-8">
             <div className="space-y-8">
               {/* Summary Header */}
-              
-                <SummaryHeader {...marketStats} />
+
+              <SummaryHeader {...marketStats} />
 
               {/* Filters */}
               <div>
@@ -331,14 +331,17 @@ function App() {
 
               {/* Borrow Modal */}
               {showBorrowPopup && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
-                  <div className="bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl max-w-lg w-full relative overflow-hidden">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+                  <div className="relative w-full max-w-6xl mx-auto bg-gray-900 border border-gray-700 rounded-2xl  shadow-2xl overflow-auto max-h-[90vh]">
+                    {/* Close Button */}
                     <button
                       onClick={() => setShowBorrowPopup(false)}
-                      className="absolute top-3 right-3 text-white text-2xl hover:text-gray-400"
+                      className="absolute top-1 right-3 text-white text-2xl hover:text-gray-400 z-50"
                     >
                       ✕
                     </button>
+
+                    {/* Trade Interface (wide version) */}
                     <TradeInterface />
                   </div>
                 </div>
