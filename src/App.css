@@ -1,4 +1,9 @@
 /* Aggressive mobile fix - completely eliminate white overlay */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 #root {
   width: 100vw !important;
   min-height: 100vh !important;
